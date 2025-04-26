@@ -1,7 +1,12 @@
+"use client"
+
 import Link from "next/link"
+import { useState } from "react"
 
 // This component will render at routes like /products/electronics, /products/clothing, etc.
 export default function CategoryPage({ params }: { params: { category: string } }) {
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null)
+
   // Sample product data - in a real app, this would come from a database or API
   const products =
     {
@@ -33,7 +38,11 @@ export default function CategoryPage({ params }: { params: { category: string } 
       <ul className="space-y-2">
         {products.map((product) => (
           <li key={product.id}>
-            <Link href={`/products/${params.category}/${product.id}`} className="text-blue-500 hover:underline">
+            <Link
+              href={`/products/${params.category}/${product.id}`}
+              className={`hover:underline ${selectedProduct === product.id ? "text-green-500 font-bold" : "text-blue-500"}`}
+              onClick={() => setSelectedProduct(product.id)}
+            >
               {product.name}
             </Link>
           </li>

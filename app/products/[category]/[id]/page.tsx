@@ -1,7 +1,21 @@
+"use client"
+
 import Link from "next/link"
+import { useState, useEffect } from "react"
 
 // This component will render at routes like /products/electronics/1, /products/clothing/2, etc.
 export default function ProductPage({ params }: { params: { category: string; id: string } }) {
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Simulate data loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   // Sample product data - in a real app, this would come from a database or API
   const productDetails = {
     electronics: {
@@ -20,6 +34,20 @@ export default function ProductPage({ params }: { params: { category: string; id
       "3": { name: "Technical Book", description: "In-depth technical guide" },
     },
   }[params.category]?.[params.id]
+
+  if (isLoading) {
+    return (
+      <div className="p-8">
+        <div className="animate-pulse">
+          <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+          <div className="h-8 bg-gray-200 rounded w-1/2 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/3 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+          <div className="h-20 bg-gray-200 rounded w-full"></div>
+        </div>
+      </div>
+    )
+  }
 
   if (!productDetails) {
     return (
